@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="闫浩强">
+
+
+    <meta name="subtitle" content="Hank-Yan">
+
+
+    <meta name="description" content="闫浩强">
+
+
+    <meta name="keywords" content="Hank-Yan, yanhaoqiang, 闫浩强, 算法, 大数据">
+
+
+<title>python 日期模块（time/datetime 傻傻分不清楚） | Hank-Yan</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">python 日期模块（time/datetime 傻傻分不清楚）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">闫浩强</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 8, 2020&nbsp;&nbsp;20:50:14</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>python 里面处理时间的类库主要是 time 和 datatime 两个库， 这两个库经常用混，今天彻底总结一下。</p>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决:"></a>解决:</h2><h3 id="time-模块"><a href="#time-模块" class="headerlink" title="time 模块"></a>time 模块</h3><p>在 <code>Python</code> 文档里，time是归类在<code>Generic Operating System Services</code>中，换句话说， 它提供的功能是更加接近于操作系统层面的。通读文档可知，<code>time</code> 模块​是围绕着 <code>Unix Timestamp</code> 进行的。</p>
+<p>该模块主要包括一个类 <code>struct_time</code>，另外其他几个函数及相关常量。 需要注意的是在该模块中的大多数函数是调用了所在平台<code>C library</code>的同名函数， 所以要特别注意有些函数是平台相关的，可能会在不同的平台有不同的效果。另外一点是，由于是基于<code>Unix Timestamp</code>，所以其所能表述的日期范围被限定在 <code>1970 - 2038</code> 之间，如果你写的代码需要处理在前面所述范围之外的日期，那可能需要考虑使用<code>datetime</code>模块更好。文档解释比较费劲，具体看看怎么用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> time</span><br><span class="line"> </span><br><span class="line">In [<span class="number">2</span>]: time.time()</span><br><span class="line">Out[<span class="number">2</span>]: <span class="number">1414332433.345712</span></span><br><span class="line">In [<span class="number">3</span>]: timestamp = time.time()</span><br><span class="line"> </span><br><span class="line">In [<span class="number">4</span>]: time.gmtime(timestamp)</span><br><span class="line">Out[<span class="number">4</span>]: time.struct_time(tm_year=<span class="number">2014</span>, tm_mon=<span class="number">10</span>, tm_mday=<span class="number">26</span>, tm_hour=<span class="number">14</span>, tm_min=<span class="number">7</span>, tm_sec=<span class="number">13</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">299</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"> </span><br><span class="line">In [<span class="number">5</span>]: time.localtime(timestamp)</span><br><span class="line">Out[<span class="number">5</span>]: time.struct_time(tm_year=<span class="number">2014</span>, tm_mon=<span class="number">10</span>, tm_mday=<span class="number">26</span>, tm_hour=<span class="number">22</span>, tm_min=<span class="number">7</span>, tm_sec=<span class="number">13</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">299</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line">In [<span class="number">6</span>]: struct_time = time.localtime(timestamp)</span><br><span class="line"> </span><br><span class="line">In [<span class="number">7</span>]: time.ctime(timestamp)</span><br><span class="line">Out[<span class="number">7</span>]: <span class="string">&#x27;Sun Oct 26 22:07:13 2014&#x27;</span></span><br><span class="line"> </span><br><span class="line">In [<span class="number">8</span>]: time.asctime(struct_time)</span><br><span class="line">Out[<span class="number">8</span>]: <span class="string">&#x27;Sun Oct 26 22:07:13 2014&#x27;</span></span><br><span class="line"> </span><br><span class="line">In [<span class="number">9</span>]: time.mktime(struct_time)</span><br><span class="line">Out[<span class="number">9</span>]: <span class="number">1414332433.0</span></span><br><span class="line"> </span><br><span class="line">In [<span class="number">10</span>]: time.strftime(<span class="string">&quot;%a, %d %b %Y %H:%M:%S +0000&quot;</span>, struct_time)</span><br><span class="line">Out[<span class="number">10</span>]: <span class="string">&#x27;Sun, 26 Oct 2014 22:07:13 +0000&#x27;</span></span><br><span class="line"> </span><br><span class="line">In [<span class="number">11</span>]: time.strptime(<span class="string">&quot;30 Nov 00&quot;</span>, <span class="string">&quot;%d %b %y&quot;</span>)</span><br><span class="line">Out[<span class="number">11</span>]: time.struct_time(tm_year=<span class="number">2000</span>, tm_mon=<span class="number">11</span>, tm_mday=<span class="number">30</span>, tm_hour=<span class="number">0</span>, tm_min=<span class="number">0</span>, tm_sec=<span class="number">0</span>, tm_wday=<span class="number">3</span>, tm_yday=<span class="number">335</span>, tm_isdst=-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p><code>time</code> 模块的使用比较简单，对应时间的使用无非几种，时间戳（数值）、时间、字符串三者之间的相互转换。而上面time 模块的功能基本都能使用 <code>datetime</code> 模块来完成，下面我们来看一下 datetime 模块的具体使用。</p>
+<h3 id="datetime-模块"><a href="#datetime-模块" class="headerlink" title="datetime 模块"></a>datetime 模块</h3><p>datetime 可以看做是对 time 模块的进一步封装，提供了很多实用的函数，datetime 包含的类如下:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">datetime(obj)</span><br><span class="line">    timedelta     # 主要用于计算时间跨度</span><br><span class="line">    tzinfo        # 时区相关</span><br><span class="line">    time          # 只关注时间</span><br><span class="line">    date          # 只关注日期</span><br><span class="line">    datetime      # 同时有时间和日期</span><br></pre></td></tr></table></figure>
+<p>其中用的比较多的是 <code>datetime.datetime</code> 和 <code>datetime.timedelta</code> 两个模块。下面对这两个模块重点讲解。<br>① <strong>datetime.datetime 模块</strong><br>可以通过 <code>datetime.datetime.now()</code> 来获取当前的时间信息。返回的是一个 <code>datetime.datetime</code> 对象，对于这个对象而言，主要包含了下面这些方法：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">datetime.year</span><br><span class="line">datetime.month</span><br><span class="line">datetime.day</span><br><span class="line">datetime.hour</span><br><span class="line">datetime.minute</span><br><span class="line">datetime.second</span><br><span class="line">datetime.microsecond</span><br><span class="line">datetime.tzinfo</span><br><span class="line"> </span><br><span class="line">datetime.date() # 返回 date 对象</span><br><span class="line">datetime.time() # 返回 time 对象</span><br><span class="line">datetime.replace(name=value) # 前面所述各项属性是 read-only 的，需要此方法才可更改</span><br><span class="line">datetime.timetuple() # 返回time.struct_time 对象</span><br><span class="line">dattime.strftime(format) # 按照 format 进行格式化输出</span><br><span class="line">除了对象身上有上面这些方法外，datetime 还有一些类方法，供我们使用：</span><br><span class="line">datetime.today()a  # 当前时间，localtime</span><br><span class="line">datetime.now([tz]) # 当前时间默认 localtime</span><br><span class="line">datetime.utcnow()  # UTC 时间</span><br><span class="line">datetime.fromtimestamp(timestamp[, tz]) # 由 Unix Timestamp 构建对象</span><br><span class="line">datetime.strptime(date_string, format)  # 给定时间格式解析字符串</span><br></pre></td></tr></table></figure>
+<p>上面的方法都非常常用，在日常的字符串，时间戳相互转换中经常用到。上面省略了时区的相关函数，需要的时候自行查询。<br>② <strong>datetime.timedelta 模块</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">1</span>]: <span class="keyword">import</span> datetime</span><br><span class="line">In [<span class="number">2</span>]: time_now = datetime.datetime.now()</span><br><span class="line">In [<span class="number">3</span>]: time_now</span><br><span class="line">Out[<span class="number">3</span>]: datetime.datetime(<span class="number">2014</span>, <span class="number">10</span>, <span class="number">27</span>, <span class="number">21</span>, <span class="number">46</span>, <span class="number">16</span>, <span class="number">657523</span>)</span><br><span class="line"> </span><br><span class="line">In [<span class="number">4</span>]: delta1 = datetime.timedelta(hours=<span class="number">25</span>)</span><br><span class="line">In [<span class="number">5</span>]: <span class="built_in">print</span>(time_now + delta1)</span><br><span class="line"><span class="number">2014</span>-<span class="number">10</span>-<span class="number">28</span> <span class="number">22</span>:<span class="number">46</span>:<span class="number">16.657523</span></span><br><span class="line"> </span><br><span class="line">In [<span class="number">6</span>]: <span class="built_in">print</span>(time_now - delta1)</span><br><span class="line"><span class="number">2014</span>-<span class="number">10</span>-<span class="number">26</span> <span class="number">20</span>:<span class="number">46</span>:<span class="number">16.657523</span></span><br></pre></td></tr></table></figure>
+<p>两个<code>datetime.datetime</code> 对象可以直接相减，得到的就是一个 <code>timedelta</code> 对象。</p>
+<h3 id="时间戳与时间对象的转换"><a href="#时间戳与时间对象的转换" class="headerlink" title="时间戳与时间对象的转换"></a>时间戳与时间对象的转换</h3><p>通过前面的讲解，我们已经知道了字符串和时间之间的转换方法。但是日常还有一种时间格式，时间戳，也经常需要和时间进行转换，这个怎么处理呢？ <br>① <strong>获取当前时间戳</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">time.time()</span><br></pre></td></tr></table></figure>
+<p>② <strong>datetime.datetime 对象转时间戳</strong></p>
+<ol>
+<li>python3中，提供了 <code>datetime.datetime.timestamp</code> 可以直接将<code>datetime.datetime</code> 对象转换为 <code>timestamp</code> 对象</li>
+<li>python2中，需要曲线救国<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- datetime.datetime.now().timestamp() 将 datetime 对象转为一个 time 对象</span><br><span class="line">- time.mktime(timetuple_obj) 使用 time.mktime 来创建一个 time 对象</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>③ <strong>时间戳对象转 datetime</strong><br>时间戳转 datetime 也很简单，<br><code>datetime.datetime.fromtimestamp(time.time())</code></p>
+<h3 id="后话"><a href="#后话" class="headerlink" title="后话"></a>后话</h3><p>① <code>strftime / strptime</code> 怎么记忆？<br>p 可以简单看作是parse ，就是从字符串里面 parse 出来具体的日期对象是什么？ <br>f 可以简单看作是format,  就是把日期对象 format 成一个字符串。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>闫浩强</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://yanhaoqiang.cn/2020/07/08/python-%E6%97%A5%E6%9C%9F%E6%A8%A1%E5%9D%97%EF%BC%88time-datetime-%E5%82%BB%E5%82%BB%E5%88%86%E4%B8%8D%E6%B8%85%E6%A5%9A%EF%BC%89/">https://yanhaoqiang.cn/2020/07/08/python-%E6%97%A5%E6%9C%9F%E6%A8%A1%E5%9D%97%EF%BC%88time-datetime-%E5%82%BB%E5%82%BB%E5%88%86%E4%B8%8D%E6%B8%85%E6%A5%9A%EF%BC%89/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/07/28/python-t-%E5%88%86%E5%89%B2%E7%AC%A6%E5%BC%95%E8%B5%B7%E7%9A%84bug/">python \t 分割符引起的BUG</a>
+            
+            
+            <a class="next" rel="next" href="/2020/07/05/python-%E5%8C%85%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/">python 包机制详解</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 闫浩强 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

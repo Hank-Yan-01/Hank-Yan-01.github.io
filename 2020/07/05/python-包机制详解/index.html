@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="闫浩强">
+
+
+    <meta name="subtitle" content="Hank-Yan">
+
+
+    <meta name="description" content="闫浩强">
+
+
+    <meta name="keywords" content="Hank-Yan, yanhaoqiang, 闫浩强, 算法, 大数据">
+
+
+<title>python 包机制详解 | Hank-Yan</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">python 包机制详解</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">闫浩强</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 5, 2020&nbsp;&nbsp;18:44:57</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80/">数据处理基础</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一-问题背景"><a href="#一-问题背景" class="headerlink" title="一. 问题背景"></a>一. 问题背景</h2><p>无论哪一种语言，随着项目的增大，都会进行适当的模块划分，随之而来的就是各个模块中函数或者方法重名的问题。自己模块中对外提供的方法，应该避免其他模块中提供的方法重名，否则就会乱套。但是，要对每个模块起一个不重名的方法是一件非常困难的事情，如何解决这个问题呢？各种语言选择了自己的方式，比如 java 通过包机制解决，一个 java 类文件一定在一个 package 里面（默认也会有一个 package），java 类中定义的方法，实际上都是带包名的全路径方法；比如 php ，每个类文件可以定义其命名空间，调用的类也是带命名空间的，PSR 规范发展了一代又一代，随着 namespace 的发展，文件加载机制也发生了许多变化，最终使得开发过程变的整洁干净。package 和 namespace 是解决成员重名的重要手段。各种语言都类似。今天我们重点讨论的是 python 的包机制，实际上就是python 的 package 机制。</p>
+<blockquote>
+<p>ps: 下文很多地方使用 java 的package 作为类比来解释 python 的包机制朴素思想，实际上任何的命名空间都类似，不一定非是 java.</p>
+</blockquote>
+<h2 id="二-python-中的模块加载机制"><a href="#二-python-中的模块加载机制" class="headerlink" title="二. python 中的模块加载机制"></a>二. python 中的模块加载机制</h2><h3 id="1-python-中如何引入一个“包”"><a href="#1-python-中如何引入一个“包”" class="headerlink" title="1. python 中如何引入一个“包”"></a>1. python 中如何引入一个“包”</h3><p>先回顾一下java里面是如何定义一个 package 的。实际上在 java 里，每个源文件的第一行会有如下的一行，意思是说，当前的 demo 目录是一个package,  里面的类，比如 Test.java ，在被别人调用的时候，要使用 <code>com.hankyan.demo.Test</code> 的方式来调用，也就是说加上包名才是完整的类名字。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hankyan.demo;</span><br></pre></td></tr></table></figure>
+<p>再来看 python 里面是怎么定义 package 的？ python 的包也很简单，任何一个目录只要添加一个 <strong>init</strong>.py ，普通目录就变成了一个 package. 自然的，package 里面的文件如何被别人调用呢？ 应该也类似 java, 有一个全路径名。 我们以下面的示例代码来分析演示:<br>目录结构:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">module_learn</span><br><span class="line">├── __init__.py</span><br><span class="line">├── pkg1</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   └── run.py</span><br><span class="line">└── pkg4</span><br><span class="line">    ├── demo.py</span><br><span class="line">    ├── __init__.py</span><br><span class="line">​```</span><br><span class="line">pkg1/run.py 内容:</span><br><span class="line">```python</span><br><span class="line">import sys</span><br><span class="line">print(&quot;pkg1/run.py run...&quot;)</span><br><span class="line">from pkg4.demo import main</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>pkg4/demo.py 内容:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">   <span class="built_in">print</span>(sys.path)</span><br><span class="line">   <span class="built_in">print</span>(<span class="string">&quot;pkg4.py run...&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>如上，根目录是module_learn, 我们在 pkg1/run.py 里面调用了同级目录 pkg4里模块 demo 的方法 ，现在加入我们想执行 pkg1 的 run 模块该怎么执行？给几个选项，可以思考一下： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">① 在 pkg1 目录里执行    python run.py</span><br><span class="line">② 在 module_learn 目录里面执行  python pkg1/run.py  </span><br><span class="line">③ 在 module_learn 目录的外面执行   python module_learn/pkg1/run.py </span><br></pre></td></tr></table></figure>
+<p>实际上上面三种都是错的。 <br>第一种执行结果:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devpkg1]$</span><span class="bash"> python run.py</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;run.py&quot;, line 7, in &lt;module&gt;</span><br><span class="line">    from module_learn.pkg4.demo import main</span><br><span class="line">ImportError: No module named pkg4.demo</span><br></pre></td></tr></table></figure>
+<p>第二种执行结果:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devmodule_learn]$</span><span class="bash"> python pkg1/run.py</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;pkg1/run.py&quot;, line 7, in &lt;module&gt;</span><br><span class="line">    from module_learn.pkg4.demo import main</span><br><span class="line">ImportError: No module named pkg4.demo</span><br></pre></td></tr></table></figure>
+<p>第三种执行结果:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devspark_learn]$</span><span class="bash"> python module_learn/pkg1/run.py</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;module_learn/pkg1/run.py&quot;, line 7, in &lt;module&gt;</span><br><span class="line">    from module_learn.pkg4.demo import main</span><br><span class="line">ImportError: No module named pkg4.demo</span><br></pre></td></tr></table></figure>
+<p>这就很奇怪了，都报 pkg4.demo 找不到，这是为什么呢？ 找不到就是命名空间不对，也就是包名不对，但是看上去第二种是最可能对的，因为 java 里面就是这样的目录结构啊，什么情况呢？ </p>
+<h3 id="2-python-中的模块搜索机制"><a href="#2-python-中的模块搜索机制" class="headerlink" title="2. python 中的模块搜索机制"></a>2. python 中的模块搜索机制</h3><p>这里实际上就要引入 python 的模块搜索机制了，python 遇到 import 一个模块的时候，会通过下面几个路径搜索要加载的模块：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 执行脚本所在的目录 （ 比如  python run.py  就是 pkg1;  实质上，python  pkg1/run.py 和 python module_learn/pkg1/run.py 这个目录都是  pkg1）</span><br><span class="line">2. PYTHON_PATH 环境变量里面</span><br><span class="line">3. site-package 的 pth 文件里面（这个文件里面可以写很多路径，以被搜索）</span><br><span class="line">4. site-package 下面的各个包里面</span><br></pre></td></tr></table></figure>
+<p>实际上，上面的几个路径，可以在 sys 模块的 的 sys.path 查看， sys.path 是一个 list。上面之所以报错，就是因为搜索路径下面真的是没有 pkg4.demo 这个模块。 那么该怎么解决呢？ 很简单:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devmodule_learn]$</span><span class="bash"> python -m pkg1.run</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">[&#x27;&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dynload&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;]</span><br><span class="line">pkg4.py run...</span><br></pre></td></tr></table></figure>
+<p>如上所示，我们使用  python -m  来把一个 python 文件当做一个 python 模块执行，即可完美解决。 </p>
+<h3 id="3-python-m-是什么意思？"><a href="#3-python-m-是什么意思？" class="headerlink" title="3. python -m 是什么意思？"></a>3. python -m 是什么意思？</h3><p>虽然上面正常执行了，但是我们会心存疑问，python -m 到底是什么东西? 查看相关文档介绍: </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-m mod run library module as a script (terminates option list)</span><br></pre></td></tr></table></figure>
+<p>为什么 <code>python -m pkg1.run</code> 就能运行成功， <code>python pkg1/run.py</code> 就不行呢？ 为了了解真相，我们把 sys.path 打出来看看区别。 <br>更改 pkg1/run.py 内容，什么都不干，直接打印 sys.path, 查看两种执行方式有何异同：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;pkg1/run.py run...&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(sys.path)</span><br></pre></td></tr></table></figure>
+<p>① 执行 <code>python -m pkg1.run</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devmodule_learn]$</span><span class="bash"> python -m pkg1.run</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">[&#x27;&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib</span><br><span class="line">-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dynload&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;]</span><br></pre></td></tr></table></figure>
+<p>② 执行 <code>python pkg1/run.py</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devmodule_learn]$</span><span class="bash"> python pkg1/run.py</span> </span><br><span class="line">pkg1/run.py run...</span><br><span class="line">[&#x27;/home/map/yanhaoqiang/huiyan/spark_learn/spark_learn/module_learn/pkg1&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/</span><br><span class="line">.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dyn</span><br><span class="line">load&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-本节小结"><a href="#4-本节小结" class="headerlink" title="4. 本节小结"></a>4. 本节小结</h3><p><strong>问题的本质清晰了</strong>，实际上，我们发现两种方式，sys.path 并不完全相同，<strong>注意看上面 list 的第 0 个位置</strong>，使用  -m 执行的时候， <strong>是一个 ‘’, 代表了当前目录</strong>，也就是 module_learn 目录； 而 <code>python pkg1/run.py</code> 的时候， 这个目录是  pkg1 目录。 真相大白。结合前面讲的模块搜索路径可以看到。 直接使用 python pkg1/run.py 的时候，因为当前目录是 pkg1，而在这个目录当然找不到 pkg4.demo 了，所以报错了。 而 <code>python -m pkg1.run</code> 因为当前目录是 ‘’,   也就是 module_learn，所以能够正确运行。而这里的  pkg1.run  是不是类似 java 里的包路径呢？ 当然你会说如果完全类似 java 里面的应该是  python -m  module_learn.pkg1.run .  我们可以稍做修改，让 python 代码更像java的方式使用 package:<br>到 module_learn 的父目录，更改 run1 的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;pkg1/run.py run...&quot;</span>)</span><br><span class="line"><span class="keyword">from</span> module_learn.pkg4.demo <span class="keyword">import</span> main</span><br><span class="line">main()</span><br></pre></td></tr></table></figure>
+<p>注意，在上面的代码里，我们把 run.py 代码加载 pkg4.demo的逻辑 <code>从  from pkg4.demo import main 改为了  from module_learn.pkg4.demo import main</code>， 加了个顶层目录 module_learn, 然后执行:<br><code>python -m module_learn.pkg1.run：</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[map@cp01-yanhaoqiang-devspark_learn]$</span><span class="bash"> python -m module_learn.pkg1.run</span></span><br><span class="line">pkg1/run.py run...</span><br><span class="line">[&#x27;&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dynload&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;]</span><br><span class="line">pkg4.py run...</span><br></pre></td></tr></table></figure>
+<p>明白了吧，也是正常运行的， 此时的 module_learn.pkg1.run  是不是已经很像 java 里的 package 了呢？ 就是这样。</p>
+<h2 id="三-相对路径导入与绝对路径导入"><a href="#三-相对路径导入与绝对路径导入" class="headerlink" title="三. 相对路径导入与绝对路径导入"></a>三. 相对路径导入与绝对路径导入</h2><h3 id="1-我们在讨论的当前路径是什么？"><a href="#1-我们在讨论的当前路径是什么？" class="headerlink" title="1. 我们在讨论的当前路径是什么？"></a>1. 我们在讨论的当前路径是什么？</h3><p>我们已经知道，上面使用 python -m 执行模块的时候，能够将  ‘’,  也就是当前目录加入到 sys.path 里面。 这里，当前目录，指的是敲 <code>python ***.py 命令的目录，而非 ***.py</code>  脚本所在的目录。所以，解决这个问题，除了使用 python -m 执行外，还可以直接把当前目录加入到 PYTHON_PATH 里面。 你可以这样做:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">python <span class="keyword">for</span> me</span> </span><br><span class="line">local_p=`dirname $0`</span><br><span class="line">export PYTHONPATH=$PYTHONPATH:./</span><br><span class="line">​</span><br><span class="line"><span class="meta">$</span><span class="bash">local_p/bin/python2.7 <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span></span><br></pre></td></tr></table></figure>
+<p>如上，使用一个sh 脚本 比如将该脚本命名为 python （相当于咱们自己包装了 python 解释器，也命名为 python, 之后用该解释器），然后在里面加入  export PYTHONPATH=$PYTHONPATH:./   就这么短短一句，就能把当前目录加入到 PYTHON_PATH 里面。之后再执行  python pkg1/run.py 就能正常运行了。 这是明白问题根源之后，做的一个变通。<br>我们这里一直在谈“当前目录”。内在的包含了一个问题。即在 python 模块中， 引入其他模块的时候，我的路径究竟该怎么写？当前目录是谁？其实在上面尝试的时候，我们已经隐约有了答案：<br>① 当根目录是 module_learn 时:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">module_learn</span><br><span class="line">├── __init__.py</span><br><span class="line">├── pkg1</span><br><span class="line">│   ├── __init__.py</span><br><span class="line">│   └── run.py</span><br><span class="line">└── pkg4</span><br><span class="line">    ├── demo.py</span><br><span class="line">    ├── __init__.py</span><br><span class="line">我们在  pkg1/run.py 里使用了下面命令引入  pkg4/demo.py 的函数 main：</span><br><span class="line">from pkg4.demo import main</span><br></pre></td></tr></table></figure>
+<p>② 当根目录时 module_learn 父目录时，如下时 spark_learn 时（请忽略文件夹名字 😂）：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">── spark_learn</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    ├── __main__.py</span><br><span class="line">    ├── module_learn</span><br><span class="line">    │   ├── __init__.py</span><br><span class="line">    │   ├── pkg1</span><br><span class="line">    │   │   ├── __init__.py</span><br><span class="line">    │   │   └── run.py</span><br><span class="line">    │   └── pkg4</span><br><span class="line">    │       ├── demo.py</span><br><span class="line">    │       ├── __init__.py</span><br></pre></td></tr></table></figure>
+<p>我们在  <code>pkg1/run.py</code> 里使用了下面命令引入  <code>pkg4/demo.py</code> 的函数 main：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> module_learn.pkg4.demo <span class="keyword">import</span> main</span><br></pre></td></tr></table></figure>
+<p>结论: 随着你认为的根目录的不同，引入的时候，也相对有差异。其实这和其他语言是类似的。 在 java 里面一定有一个根目录，之后的 package 都是相对于这个根目录的。所以在 python 里面，也可以这样写，首先确定根目录，然后在之后所有的子目录里面，用绝对引用的方式，来应用自己需要的模块。这里提到了绝对引用，就是从根目录开始，把所有路径都写上的方式。</p>
+<h3 id="2-相对路径是怎么回事儿？"><a href="#2-相对路径是怎么回事儿？" class="headerlink" title="2. 相对路径是怎么回事儿？"></a>2. 相对路径是怎么回事儿？</h3><p>再进一步，想想上面的绝对路径引用有什么问题？ <br>如果整个项目都是自己的，其实没什么大问题，最大的问题可能就是麻烦了，每次都要从根目录，写一长串来引用一个模块；另一个问题是，需要把顶层目录硬编码在代码里面，这样在想更改包名的时候很麻烦。如果你写的模块要被其他人使用（非安装方式），那绝对路径引用会引出许多其他的问题，让调用方很头疼，下面会讲到。python 以简洁著称，肯定不允许这两种情况出现，所以 python 在导入包这块更进一步，提出了相对路径导入包的方案，先看看相对导入是什么东西，假如有如下目录结构：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package/</span><br><span class="line">    __init__.py</span><br><span class="line">    subpackage1/</span><br><span class="line">        __init__.py</span><br><span class="line">        moduleX.py</span><br><span class="line">        moduleY.py</span><br><span class="line">    subpackage2/</span><br><span class="line">        __init__.py</span><br><span class="line">        moduleZ.py</span><br><span class="line">    moduleA.py</span><br></pre></td></tr></table></figure>
+<p>你当前在目录 moduleX.py 里面，你想引用其他模块的内容，怎么办呢？ 下面的方法都是可行的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .moduleY <span class="keyword">import</span> spam</span><br><span class="line"><span class="keyword">from</span> .moduleY <span class="keyword">import</span> spam <span class="keyword">as</span> ham</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> moduleY</span><br><span class="line"><span class="keyword">from</span> ..subpackage1 <span class="keyword">import</span> moduleY</span><br><span class="line"><span class="keyword">from</span> ..subpackage2.moduleZ <span class="keyword">import</span> eggs</span><br><span class="line"><span class="keyword">from</span> ..moduleA <span class="keyword">import</span> foo</span><br><span class="line"><span class="keyword">from</span> ...package <span class="keyword">import</span> bar</span><br><span class="line"><span class="keyword">from</span> ...sys <span class="keyword">import</span> path （龟叔写的最后这一条，但是又说严禁这么使用😂）</span><br></pre></td></tr></table></figure>
+<p>上面一个点（.）代表当前目录，两个点（..）代表上层目录，三个点（…）代表爷爷目录，依此类推，用法简介，表达力强（ps: 为啥用这种方式，有一段很有意思的历史，见 <code>pep328:</code> <a target="_blank" rel="noopener" href="https://www.python.org/dev/peps/pep-0328/">https://www.python.org/dev/peps/pep-0328/</a> )。<br>可以看到，非常灵活。这样只要在根目录，或者父目录，都可以通过路径来正确的引用到某个模块，而不用改代码（from pkg4.demo import main  vs  from module_learn.pkg4.demo import main,   这种绝对路径引用问题，在自己写了一个包，提供给其他人引用的时候尤其常见，因为“当前目录”不正确嘛！而相对路径引用完美的避开了这个问题，还有其他解决方案，比如把包安装到 site-package 下面）。<br>需要特别注意，<strong>相对路径导入包，只能使用 from *** import *** 的语法</strong>。 而绝对路径导入包，即可以使用 import *** 又可以使用  from *** import *** 的语法。另一方面，<strong>相对导包，必须使用 python -m 执行(否则报 relative imports error )！！！</strong><br>大多数情况下，推荐使用相对引用。</p>
+<h3 id="3-再论-python-m"><a href="#3-再论-python-m" class="headerlink" title="3. 再论 python -m"></a>3. 再论 python -m</h3><p>再看 python -m 之前，先来明确两个东西：<br>① 如果想把一个 目录作为package 对待，需要包含一个 <code>__init__.py</code> ，再里面可以规定当前 package 对外提供服务的模块都有哪些。<br>② 如果想把一个 目录作为 package 执行，需要包含一个 <code>__main__.py</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">可以将pkg作为一个文件夹执行（调用的是 __main__.py）：</span><br><span class="line">python pkg</span><br><span class="line">​</span><br><span class="line">也可以将pkg作为一个Package执行（除了调用 __main__.py 外，会执行 __init__.py 的内容）：</span><br><span class="line">python -m pkg</span><br></pre></td></tr></table></figure>
+<p>更进一步，上面两者还有什么区别呢? 最根本的区别在于，python -m 除了调用 <strong>main</strong>.py 外，还会调用 <strong>init</strong>.py , 这点要注意。<br>目录结构:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">└── pkg5</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    └── __main__.py</span><br></pre></td></tr></table></figure>
+<p>文件内容:<br>文件:  <code>__init__.py</code> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__init__&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__init__.__name__&#x27;</span>, __name__)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__init__.__package__&#x27;</span>, __package__)</span><br><span class="line">​```</span><br><span class="line">文件: `__main__.py`</span><br><span class="line">```python</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">​</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__main__&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__main__.__name__&#x27;</span>, __name__)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;__main__.__package__&#x27;</span>, __package__)</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;sys.path&#x27;</span>, sys.path)</span><br></pre></td></tr></table></figure>
+<p>①. 执行: <code>python pkg5</code>，输出如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">__main__</span><br><span class="line">(&#x27;__main__.__name__&#x27;, &#x27;__main__&#x27;)</span><br><span class="line">(&#x27;__main__.__package__&#x27;, &#x27;&#x27;)</span><br><span class="line">(&#x27;sys.path&#x27;, [&#x27;pkg5&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/</span><br><span class="line">lib/python2.7/lib-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dynload&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<p>②. 执行: <code>python -m pkg5</code> , 输出如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">__init__</span><br><span class="line">(&#x27;__init__.__name__&#x27;, &#x27;pkg5&#x27;)</span><br><span class="line">(&#x27;__init__.__package__&#x27;, &#x27;pkg5&#x27;)</span><br><span class="line">__main__</span><br><span class="line">(&#x27;__main__.__name__&#x27;, &#x27;__main__&#x27;)</span><br><span class="line">(&#x27;__main__.__package__&#x27;, &#x27;pkg5&#x27;)</span><br><span class="line">(&#x27;sys.path&#x27;, [&#x27;&#x27;, &#x27;/home/map/.jumbo/lib/python27.zip&#x27;, &#x27;/home/map/.jumbo/lib/python2.7&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/plat-linux2&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-tk&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-old&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/lib-dynload&#x27;, &#x27;/home/map/.jumbo/lib/python2.7/site-packages&#x27;])</span><br></pre></td></tr></table></figure>
+<p>其实 main 文件输出的异同已经很清楚了，就是python 模块加载机制的不同导致的。 而 <code>__init__.py</code> 的不同是重点。</p>
+<blockquote>
+<p>文章版本所有，转载请注明出处.</p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>闫浩强</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://yanhaoqiang.cn/2020/07/05/python-%E5%8C%85%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/">https://yanhaoqiang.cn/2020/07/05/python-%E5%8C%85%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/07/08/python-%E6%97%A5%E6%9C%9F%E6%A8%A1%E5%9D%97%EF%BC%88time-datetime-%E5%82%BB%E5%82%BB%E5%88%86%E4%B8%8D%E6%B8%85%E6%A5%9A%EF%BC%89/">python 日期模块（time/datetime 傻傻分不清楚）</a>
+            
+            
+            <a class="next" rel="next" href="/2019/07/28/hello-world/">使用 hexo 写博客的一些语法参考</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© 闫浩强 | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
