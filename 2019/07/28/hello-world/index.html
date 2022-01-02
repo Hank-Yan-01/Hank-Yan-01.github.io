@@ -246,6 +246,8 @@
 <h3 id="删除文章"><a href="#删除文章" class="headerlink" title="删除文章"></a>删除文章</h3><p>删除文章，先在本地删除，然后依次执行 <code> hexo clean, hexo g, hexo d</code> 就能彻底删除了，如果还删除不掉，可以删除 db.json, 然后再重新发布文章就行了。</p>
 <h3 id="使用-tag-和-category"><a href="#使用-tag-和-category" class="headerlink" title="使用 tag 和 category"></a>使用 tag 和 category</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new page tag</span><br><span class="line">$ hexo new page category</span><br><span class="line">$ 在文件头部，标明 layout , 如下是 category 对应的 layout.</span><br><span class="line">---</span><br><span class="line">title: category</span><br><span class="line">layout: category</span><br><span class="line">date: 2019-12-27 08:39:21</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
+<h3 id="文章设置多个标签使用下面方式"><a href="#文章设置多个标签使用下面方式" class="headerlink" title="文章设置多个标签使用下面方式"></a>文章设置多个标签使用下面方式</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tags: [大数据,hive]</span><br></pre></td></tr></table></figure>
+
         </div>
 
         
